@@ -11,8 +11,8 @@ COPY . .
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # Expose Flask port
-EXPOSE 5000
+EXPOSE 10000
 
 # Run the app
-CMD ["python", "app_ui.py"]
+CMD ["gunicorn", "app_ui:app", "--bind", "0.0.0.0:10000"]
 
