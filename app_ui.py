@@ -13,10 +13,15 @@ model = joblib.load("model/xgboost_model.pkl")
 scaler = joblib.load("model/xgb_scaler.pkl")
 
 # Load and fit TF-IDF
-df = pd.read_csv("data/phishing_email_clean.csv")
-df = df.dropna(subset=["clean_text"])
-tfidf = TfidfVectorizer(max_features=1000)
-tfidf.fit(df["clean_text"])
+import os
+# if os.getenv("RENDER") != "true":
+#     df = pd.read_csv("data/phishing_email_clean.csv")
+
+# # df = pd.read_csv("data/phishing_email_clean.csv")
+#     df = df.dropna(subset=["clean_text"])
+#     tfidf = TfidfVectorizer(max_features=1000)
+#     tfidf.fit(df["clean_text"])
+tfidf = joblib.load("model/xgb_tfidf.pkl")
 
 # Define features
 phishing_keywords = ["verify", "account", "urgent", "click", "login", "password", "alert", "confirm", "bank", "security"]
@@ -59,5 +64,9 @@ def index():
 
     return render_template("index.html", prediction=prediction, confidence=confidence, note=note)
 
+# if __name__ == "__main__":
+#     # app.run(debug=True)
+#     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5050)
