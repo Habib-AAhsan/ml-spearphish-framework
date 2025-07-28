@@ -6,8 +6,13 @@ import pandas as pd
 import re
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import StandardScaler
+from prometheus_client import Counter, generate_latest  # <-- NEW
 
 app = Flask(__name__)
+
+# --- Prometheus Metrics ---
+phishing_counter = Counter('phishing_predictions_total', 'Total phishing predictions made')
+http_requests_total = Counter('http_requests_total', 'Total HTTP requests', ['method', 'endpoint'])  # <-- NEW
 
 # --- Load Model and Scaler ---
 model = joblib.load('model/xgboost_model.pkl')
@@ -42,6 +47,8 @@ def extract_custom_features(text):
 
 @app.route('/predict', methods=['POST'])
 def predict():
+    http_requests_total.labels(method='POST', endpoint='/predict').inc()  # <-- NEW
+
     data = request.get_json()
     if not data or 'text' not in data:
         return jsonify({'error': 'Missing "text" field in JSON.'}), 400
@@ -70,7 +77,16 @@ def predict():
     if confidence is not None and confidence < 70:
         result["note"] = "Low confidence — review recommended"
 
+    # Increment Prometheus counter on prediction
+    phishing_counter.inc()
+
     return jsonify(result)
 
+# --- Prometheus metrics route ---
+@app.route("/metrics")
+def metrics():
+    http_requests_total.labels(method='GET', endpoint='/metrics').inc()  # <-- NEW
+    return generate_latest(), 200, {'Content-Type': 'text/plain; charset=utf-8'}
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=8000)
