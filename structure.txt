@@ -1,0 +1,81 @@
+.
+├── 0-framework_strategy_phases
+│   ├── 0-spearphishing_framework_strategy.ipynb
+│   ├── mvp_phase1_full_notebook_final.ipynb
+│   ├── phase2_bert_planning.ipynb
+│   ├── phase3_realtime_adaptive_learning.ipynb
+│   ├── phase4_retaliation_threat_response.ipynb
+│   ├── spearphishing_full_roadmap_summary.ipynb
+│   └── spearphishing_roadmap_presentation.pptx
+├── 0-troubleshooting
+│   ├── eda_summary.md
+│   ├── preprocessing_fix_log.ipynb
+│   ├── preprocessing_fix_log.md
+│   └── temp.py
+├── app_ui.py
+├── app.py
+├── data
+│   ├── 01K163VTQZWX978E3KJ69SMJS8
+│   │   ├── chunks
+│   │   ├── index
+│   │   ├── meta.json
+│   │   └── tombstones
+│   ├── CEAS_08.csv
+│   ├── chunks_head
+│   │   └── 000002
+│   ├── Enron.csv
+│   ├── Ling.csv
+│   ├── Nazario.csv
+│   ├── Nigerian_Fraud.csv
+│   ├── phishing_email_clean.csv
+│   ├── phishing_email.csv
+│   ├── queries.active
+│   ├── SpamAssasin.csv
+│   ├── wal
+│   │   ├── 00000000
+│   │   ├── 00000001
+│   │   ├── 00000002
+│   │   └── 00000003
+│   ├── X_combined.npy
+│   └── y_labels.npy
+├── docker-compose.monitoring.yml
+├── Dockerfile
+├── eda_bu.py
+├── eda.py
+├── feature_engineering.py
+├── load_dataset.py
+├── logs
+│   └── predictions.db
+├── model
+│   ├── logistic_regression_model.pkl
+│   ├── scaler.pkl
+│   ├── xgb_scaler.pkl
+│   ├── xgb_tfidf.pkl
+│   └── xgboost_model.pkl
+├── monitoring
+│   └── prometheus.yml
+├── nltk_data
+│   ├── corpora
+│   │   ├── stopwords
+│   │   └── stopwords.zip
+│   └── tokenizers
+│       ├── punkt
+│       └── punkt.zip
+├── phishing_eda.ipynb
+├── plot.html
+├── predict_from_model.py
+├── preprocess.py
+├── Project Structure 1.png
+├── project structure.png
+├── README.md
+├── requirements_full.txt
+├── requirements.txt
+├── sanity_plot.html
+├── structure.txt
+├── templates
+│   └── index.html
+├── test_api.py
+├── train_baseline_model.py
+└── train_xgboost_model.py
+
+17 directories, 62 files
