@@ -135,8 +135,6 @@ This framework is a prototype for a self-improving, explainable, and production-
 A Ahsan (HABIB) - Data Engineering & Cybersecutiry
 [GitHub Profile](https://github.com/Habib-AAhsan) | [LinkedIn](https://www.linkedin.com/in/habib-aahsan)
 
-A. Ahsan (HABIB) — Data Engineering & Cybersecurity Enthusiast  
-[GitHub Profile](https://github.com/your-username) | [LinkedIn](https://www.linkedin.com/in/habib-aahsan)
 ---
 
 _Last updated: August 2025_
