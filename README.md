@@ -132,9 +132,10 @@ This framework is a prototype for a self-improving, explainable, and production-
 ---
 
 ## 👨‍💻 Maintainer
-A Ahsan (HABIB) - Data Engineering & Cybersecutiry
-[GitHub Profile](https://github.com/Habib-AAhsan) | [LinkedIn](https://www.linkedin.com/in/habib-aahsan)
-
+A Ahsan (HABIB) - Data Engineer & Researcher (Machine Learning & Security)
+- 💼 [LinkedIn](https://www.linkedin.com/in/habib-aahsan)
+- 🧑‍💻 [GitHub](https://github.com/Habib-AAhsan)
+- 📧 Email: aahsan.ualberta@gmail.com
 ---
 
 _Last updated: August 2025_
