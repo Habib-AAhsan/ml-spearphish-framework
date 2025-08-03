@@ -1,6 +1,6 @@
 # 🛡️ ML Spear-Phishing Detection Framework
 
-An intelligent, multi-phase spear-phishing detection project designed with commercial scalability and cybersecurity integration in mind.
+An intelligent, multi-phase spear-phishing detection system designed for cybersecurity integration, commercial readiness, and MLOps monitoring. This project combines traditional ML, explainable AI, real-time APIs, and production observability tools.
 
 ---
 
@@ -8,47 +8,54 @@ An intelligent, multi-phase spear-phishing detection project designed with comme
 
 This project implements a hybrid ML system to detect spear-phishing emails using:
 
-- TF-IDF vectorization
-- Phishing-aware engineered features
-- XGBoost classifier
-- Flask API for inference
-- Prometheus for monitoring
-- Grafana for dashboard visualization
-- Docker for containerization
+- TF-IDF vectorization & engineered features
+- XGBoost and CNN (TensorFlow) models
+- SHAP & LIME for explainability
+- FastAPI for inference and feedback loop
+- Prometheus + Grafana for monitoring
+- Streamlit / Gradio UI (upcoming)
+- Redis + RQ for async background tasks
+- Dockerized deployment
 
 ---
 
 ## 🧠 Multi-Phase Roadmap
 
-### ✅ Phase 1: Minimum Viable Product (MVP)
-- ✔️ Built with TF-IDF + XGBoost
-- ✔️ Containerized Flask API
-- ✔️ Prometheus + Grafana live monitoring
-- ✔️ Tested on real phishing dataset
-- ✔️ Hosted locally via Docker Compose
-- ✔️ Grafana dashboard showing prediction count
+### ✅ Phase 1: MVP + CNN  
+Core model built using **TensorFlow** with **Conv1D** layers and tuned with **Keras Tuner**.
 
-### 🔜 Phase 2: Deep NLP
-- Integration of BERT/DistilBERT for semantic detection
+### ✅ Phase 2: Model Explainability (SHAP, LIME)  
+**SHAP** and **LIME** integrated for local and global explainability with comparison plots.
 
-### 🔄 Phase 3: Adaptive Learning
-- Human-in-the-loop, live feedback API, and retraining
+### ✅ Phase 3: Real-Time Prediction API (FastAPI)  
+Asynchronous **FastAPI** app with **Redis + RQ**, supporting `/predict`, `/feedback`, and `/explain` endpoints, with **SQLite** logging.
 
-### 🔁 Phase 4: Proactive Threat Response
-- VirusTotal / AbuseIPDB integration, automated response engine
+### 🔜 Phase 4: Streamlit / Gradio Dashboard  
+User-facing dashboard for real-time predictions, visual insights, and feedback loop.
+
+### 🔜 Phase 5: Monitoring + Logging (Prometheus, Grafana)  
+Metrics collection, visual dashboards, and performance monitoring for **MLOps observability**.
+
+### 🔜 Phase 6: Dockerization + GitHub Actions CI/CD  
+Containerization, deployment automation, and **GitHub Actions** for production readiness.
 
 ---
 
-## 🧰 Tools & Technologies
+## 🧰 Libraries & Tools
 
-| Category             | Tools/Tech Stack                                                 |
-|----------------------|------------------------------------------------------------------|
-| ML & NLP             | Python, XGBoost, scikit-learn, TF-IDF, Pandas, NumPy             |
-| API & UI             | Flask, Streamlit                                                 |
-| Monitoring           | Prometheus, Grafana                                              |
-| Deployment           | Docker, Docker Compose                                           |
-| Dev Tools            | Git, GitHub, GitHub Actions (planned), VS Code                  |
-| OS Platforms         | macOS (dev), Linux (Docker image)                               |
+| Purpose                  | Libraries / Tools                                                                 |
+|--------------------------|-----------------------------------------------------------------------------------|
+| Core ML / DL             | TensorFlow, Keras, XGBoost, scikit-learn                                          |
+| Hyperparameter Tuning    | Keras Tuner                                                                       |
+| Model Explainability     | SHAP, LIME                                                                         |
+| Feature Engineering      | TF-IDF, Pandas, NumPy                                                              |
+| API Development          | FastAPI, Flask, HTTPX                                                              |
+| Dashboard UI             | Streamlit, Gradio                                                                 |
+| Monitoring & Observability | Prometheus, Grafana, python-json-logger                                         |
+| Data Visualization       | Seaborn, Matplotlib, WordCloud                                                    |
+| Async Processing         | Redis, RQ                                                                          |
+| Deployment & DevOps      | Docker, GitHub Actions (planned), VS Code, Gunicorn                              |
+| Jupyter Ecosystem        | JupyterLab, IPython, nbconvert, widgets                                           |
 
 ---
 
@@ -65,21 +72,52 @@ tree -I '__pycache__|venv|.git' -L 3 > structure.txt
 
 ## 📈 Prometheus Metrics
 
-The API exposes the following metrics at `http://localhost:8000/metrics`:
+The API exposes Prometheus-compatible metrics at `http://localhost:8000/metrics`:
 
 - `phishing_predictions_total`: Counter for prediction attempts
-- (Optional future): `http_requests_total`: Track API hits
 
-Grafana visualizes this data by querying Prometheus inside Docker:
+Visualized in Grafana via Prometheus query:
 ```prometheus
 phishing_predictions_total
 ```
 
 ---
 
+## 📊 Monitoring Stack with Docker Compose
+
+Prometheus and Grafana are launched via `docker-compose.monitoring.yml`:
+
+```yaml
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3001:3000"
+```
+
+Launch the stack:
+
+```bash
+docker-compose -f docker-compose.monitoring.yml up -d
+```
+
+- **Prometheus UI**: [http://localhost:9090](http://localhost:9090)  
+- **Grafana UI**: [http://localhost:3001](http://localhost:3001)  
+  Default credentials: `admin` / `admin`
+
+---
+
 ## 🧪 Example Usage
 
-Send a POST request to:
+POST a phishing email to the API:
+
 ```
 POST http://localhost:8000/predict
 Content-Type: application/json
@@ -91,18 +129,17 @@ Content-Type: application/json
 
 ---
 
-## 🔒 Commercial Security Intent
+## 🔒 Security Vision
 
-This is a prototype for a self-improving spear-phishing defense system with real-time detection, feedback integration, and threat intelligence sourcing — with potential SaaS deployment in the future.
-
----
-
-## 👨‍💻 Project Maintainer
-
-A. Ahsan (HABIB) — Data Engineering & Cybersecurity Enthusiast  
-[GitHub Profile](https://github.com/your-username)  
-[LinkedIn](https://linkedin.com/in/your-link)
+This framework is a prototype for a self-improving, explainable, and production-ready spear-phishing detection system. Future enhancements include automated threat response and SaaS integration.
 
 ---
 
-_Last updated: July 2025_
+## 👨‍💻 Maintainer
+
+**A. Ahsan (HABIB)** — Data Engineering & Cybersecurity Enthusiast  
+[GitHub Profile](https://github.com/your-username) | [LinkedIn](https://linkedin.com/in/your-link)
+
+---
+
+_Last updated: August 2025_
