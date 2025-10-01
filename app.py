@@ -1,92 +1,28 @@
-# app.py
-from flask import Flask, request, jsonify
-import joblib
-import numpy as np
-import pandas as pd
-import re
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.preprocessing import StandardScaler
-from prometheus_client import Counter, generate_latest  # <-- NEW
+# app.py -- minimal demo server
+from fastapi import FastAPI
+from pydantic import BaseModel
+from typing import List
 
-app = Flask(__name__)
+app = FastAPI(title="SpearPhish Demo")
 
-# --- Prometheus Metrics ---
-phishing_counter = Counter('phishing_predictions_total', 'Total phishing predictions made')
-http_requests_total = Counter('http_requests_total', 'Total HTTP requests', ['method', 'endpoint'])  # <-- NEW
+class Msg(BaseModel):
+    id: str
+    subject: str
+    body: str
+    sender: str
+    timestamp: str
 
-# --- Load Model and Scaler ---
-model = joblib.load('model/xgboost_model.pkl')
-scaler = joblib.load('model/xgb_scaler.pkl')
+@app.post("/predict")
+def predict(msgs: List[Msg]):
+    def score(body):
+        b = body.lower()
+        if "invoice" in b or "click the link" in b:
+            return 0.92
+        if "patient" in b:
+            return 0.3
+        return 0.05
+    return [{"id": m.id, "score": score(m.body)} for m in msgs]
 
-# --- Load training data for TF-IDF vocabulary ---
-df = pd.read_csv('data/phishing_email_clean.csv')
-df = df.dropna(subset=['clean_text'])
-tfidf = TfidfVectorizer(max_features=1000)
-tfidf.fit(df['clean_text'])
-
-# --- Define phishing-aware features ---
-phishing_keywords = ["verify", "account", "urgent", "click", "login", "password", "alert", "confirm", "bank", "security"]
-
-def preprocess(text):
-    text = text.lower()
-    text = re.sub(r'http[s]?://\S+', '', text)
-    text = re.sub(r'[^a-zA-Z0-9\s]', '', text)
-    text = re.sub(r'\s+', ' ', text).strip()
-    return text
-
-def extract_custom_features(text):
-    features = []
-    features.append(len(text))  # email_length
-    features.append(len(text.split()))  # num_words
-    features.append(len(re.findall(r'http[s]?://', text)))  # num_links
-    features.append(sum(1 for w in text.split() if w.isupper()))  # num_uppercase
-    features.append(text.count('!'))  # num_exclamations
-    features.append(sum(c.isdigit() for c in text))  # num_digits
-    features.append(sum(1 for kw in phishing_keywords if kw in text.lower()))  # contains_keywords
-    return features
-
-@app.route('/predict', methods=['POST'])
-def predict():
-    http_requests_total.labels(method='POST', endpoint='/predict').inc()  # <-- NEW
-
-    data = request.get_json()
-    if not data or 'text' not in data:
-        return jsonify({'error': 'Missing "text" field in JSON.'}), 400
-
-    email_text = data['text']
-    clean_text = preprocess(email_text)
-
-    tfidf_vec = tfidf.transform([clean_text]).toarray()
-    custom_vec = np.array(extract_custom_features(clean_text)).reshape(1, -1)
-    custom_vec = scaler.transform(custom_vec)
-
-    X = np.hstack((tfidf_vec, custom_vec))
-
-    pred = model.predict(X)[0]
-    prob = model.predict_proba(X)[0][1] if hasattr(model, "predict_proba") else None
-
-    label = "Phishing" if pred == 1 else "Legit"
-    confidence = round(prob * 100, 2) if prob is not None else None
-
-    result = {
-        "prediction": label,
-        "confidence": f"{confidence}%" if confidence is not None else "N/A"
-    }
-
-    # Optional soft logic
-    if confidence is not None and confidence < 70:
-        result["note"] = "Low confidence — review recommended"
-
-    # Increment Prometheus counter on prediction
-    phishing_counter.inc()
-
-    return jsonify(result)
-
-# --- Prometheus metrics route ---
-@app.route("/metrics")
-def metrics():
-    http_requests_total.labels(method='GET', endpoint='/metrics').inc()  # <-- NEW
-    return generate_latest(), 200, {'Content-Type': 'text/plain; charset=utf-8'}
-
-if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=8000)
+@app.get("/")
+def health():
+    return {"status":"ok"}
