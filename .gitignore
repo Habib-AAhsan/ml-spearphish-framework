@@ -1,25 +1,11 @@
-# Bytecode
+# Local env
+venv/
+.env
+.DS_Store
 __pycache__/
 *.pyc
-
-# Virtual environments
-venv/
-
-# Model files and scalers
 *.pkl
-model/
-
-# Data files
-data/
-*.csv
-*.zip
-*.xlsx
-*.jsonl
-
-# Logs and environment
-*.log
-.env
-
-# System files
-.DS_Store
-
+*.sqlite3
+*.ipynb_checkpoints/
+data/*
+!data/README.md
