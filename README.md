@@ -132,13 +132,14 @@ This framework is a prototype for a self-improving, explainable, and production-
 ---
 
 ## 👨‍💻 Maintainer
-
-**A. Ahsan (HABIB)** — Data Engineering & Cybersecurity Enthusiast  
-[GitHub Profile](https://github.com/your-username) | [LinkedIn](https://linkedin.com/in/your-link)
-
+A Ahsan (HABIB) - Data Engineer & Researcher (Machine Learning & Security)
+- 💼 [LinkedIn](https://www.linkedin.com/in/habib-aahsan)
+- 🧑‍💻 [GitHub](https://github.com/Habib-AAhsan)
+- 📧 Email: aahsan.ualberta@gmail.com
 ---
 
 _Last updated: August 2025_
+
 ---
 
 ## Quickstart (demo)
@@ -155,12 +156,3 @@ make demo
 
 # in another terminal, test the endpoint
 curl -s -X POST "http://127.0.0.1:8000/predict" -H "Content-Type: application/json" -d @data/toy.json | jq
-
-
-## Quick demo (visual)
-
-Run the demo locally (see Quickstart above) — or preview:
-
-![Demo: spear-phish predict endpoint](./images/demo-opt.gif)
-
-*Demo: generate toy data → call `/predict` → get scores (local)*
