@@ -1,4 +1,8 @@
 **Tech stack:** FastAPI · XGBoost/TensorFlow · SHAP · Docker · GitHub Actions
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) 
+[![Docker](https://img.shields.io/badge/Docker-ready-blue.svg)](https://www.docker.com/) 
+[![Python](https://img.shields.io/badge/Python-3.9+-green.svg)](https://www.python.org/) 
+[![FastAPI](https://img.shields.io/badge/FastAPI-live-success.svg)](https://fastapi.tiangolo.com/)
 # 🛡️ ML Spear-Phishing Detection Framework
 
 An intelligent, multi-phase spear-phishing detection system designed for cybersecurity integration, commercial readiness, and MLOps monitoring. This project combines traditional ML, explainable AI, real-time APIs, and production observability tools.
