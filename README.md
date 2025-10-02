@@ -210,3 +210,13 @@ curl -s -X POST "http://127.0.0.1:8000/predict" \
 **How scores are interpreted**
 
 score > 0.7 ⇒ likely spear-phish (tune threshold to your data).
+
+## Docker (optional)
+
+Build and run locally:
+
+```bash
+docker build -t ml-spearphish .
+docker run -p 8000:10000 ml-spearphish
+# health at http://localhost:8000/healthz
+
