@@ -206,3 +206,7 @@ curl -s -X POST "http://127.0.0.1:8000/predict" \
   -H "Content-Type: application/json" \
   -d @data/toy.json | jq
 
+
+**How scores are interpreted**
+
+score > 0.7 ⇒ likely spear-phish (tune threshold to your data).
