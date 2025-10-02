@@ -1,3 +1,4 @@
+**Tech stack:** FastAPI · XGBoost/TensorFlow · SHAP · Docker · GitHub Actions
 # 🛡️ ML Spear-Phishing Detection Framework
 
 An intelligent, multi-phase spear-phishing detection system designed for cybersecurity integration, commercial readiness, and MLOps monitoring. This project combines traditional ML, explainable AI, real-time APIs, and production observability tools.
@@ -184,3 +185,20 @@ Run the demo locally (see Quickstart above) — or preview:
 ![Demo: spear-phish predict endpoint](./images/demo-opt.gif)
 
 *Demo: generate toy data → call `/predict` → get scores (local)*
+
+**Interpretation:** score > 0.7 ⇒ likely spear-phish (tune threshold for your dataset)
+
+## Run with Docker (alt)
+
+```bash
+# build image
+docker build -t spearphish-demo .
+
+# run container
+docker run -p 8000:8000 spearphish-demo
+
+# test endpoint
+curl -s -X POST "http://127.0.0.1:8000/predict" \
+  -H "Content-Type: application/json" \
+  -d @data/toy.json | jq
+
