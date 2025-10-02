@@ -1,18 +1,25 @@
-# Use official Python image
 FROM python:3.11-slim
 
-# Set working directory
+# 1) base setup
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PORT=8000
+
 WORKDIR /app
 
-# Copy files
+# 2) system deps (minimal)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential curl && \
+    rm -rf /var/lib/apt/lists/*
+
+# 3) install python deps first to leverage docker layer cache
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+# 4) copy app code
 COPY . .
 
-# Install dependencies
-RUN pip install --upgrade pip && pip install -r requirements.txt
-
-# Expose Flask port
-EXPOSE 10000
-
-# Run the app
-CMD ["gunicorn", "app_ui:app", "--bind", "0.0.0.0:10000"]
-
+# 5) start
+# Use sh -c so ${PORT} is expanded; default to 8000 for local docker runs
+CMD ["sh", "-c", "uvicorn app:app --host 0.0.0.0 --port ${PORT:-8000}"]
