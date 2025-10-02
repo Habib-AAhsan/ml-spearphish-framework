@@ -23,6 +23,13 @@ def predict(msgs: List[Msg]):
         return 0.05
     return [{"id": m.id, "score": score(m.body)} for m in msgs]
 
+# Keep the existing root health endpoint
 @app.get("/")
 def health():
-    return {"status":"ok"}
+    return {"status": "ok"}
+
+# Explicit readiness/liveness endpoint for Render / load-balancers
+@app.get("/healthz")
+def healthz():
+    return {"status": "ok"}
+
